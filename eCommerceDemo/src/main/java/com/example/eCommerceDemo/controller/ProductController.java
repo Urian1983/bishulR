@@ -4,7 +4,6 @@ import com.example.eCommerceDemo.dto.request.ProductRequestDTO;
 import com.example.eCommerceDemo.dto.response.ProductResponseDTO;
 import com.example.eCommerceDemo.service.product.ProductService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +19,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @PostMapping("/api/product")
+    @PostMapping
     ResponseEntity<ProductResponseDTO> create(@Valid
                                               @RequestBody
                                               ProductRequestDTO productRequestDTO) {

@@ -31,7 +31,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public CartResponseDTO getCart(Long userId) {
         Cart cartToGet = cartRepository.findByUserId(userId)
                 .orElseThrow(NotFoundException::new);
@@ -40,7 +40,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public CartResponseDTO addItem(CartItemRequestDTO cartItemRequestDTO, Long userId) {
         Cart cartToGet = cartRepository.findByUserId(userId)
                 .orElseThrow(NotFoundException::new);
@@ -61,7 +61,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public CartResponseDTO updateItem(CartItemRequestDTO cartItemRequestDTO, Long userId) {
         Cart cart = cartRepository.findByUserId(userId)
                 .orElseThrow(NotFoundException::new);
@@ -80,7 +80,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public CartResponseDTO removeItem(Long cartItemId, Long userId) {
         Cart cart = cartRepository.findByUserId(userId)
                 .orElseThrow(NotFoundException::new);
@@ -98,7 +98,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public CartResponseDTO clearCart(Long userId) {
         Cart cartToClear = cartRepository.findByUserId(userId)
                 .orElseThrow(NotFoundException::new);

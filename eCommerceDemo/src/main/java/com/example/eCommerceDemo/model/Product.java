@@ -28,6 +28,9 @@ public class Product {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    @Column(name="image_product")
+    String imageURL;
+
     @Column(unique = true,nullable = false, name="SKU")
     private String sku;
 

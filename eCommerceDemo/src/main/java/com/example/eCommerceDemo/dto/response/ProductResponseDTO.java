@@ -11,6 +11,7 @@ public class ProductResponseDTO {
     private Long id;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private String imageURL;
     private String sku;
     private String slug;
     private String name;

@@ -21,6 +21,8 @@ public class ProductRequestDTO {
    @NotBlank
    private String brand;
    @NotBlank
+   private String imageUrl;
+   @NotBlank
     private String description;
    @NotBlank
     private String shortDescription;
