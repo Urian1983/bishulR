@@ -25,7 +25,8 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public PaymentResponseDTO processPayment(PaymentRequestDTO paymentRequestDTO, Long userId) {
-        Order order = orderRepository.findById(paymentRequestDTO.getOrder().getId())
+
+        Order order = orderRepository.findById(paymentRequestDTO.getOrderId())
                 .orElseThrow(NotFoundException::new);
 
         Payment payment = paymentMapper.toEntity(paymentRequestDTO);

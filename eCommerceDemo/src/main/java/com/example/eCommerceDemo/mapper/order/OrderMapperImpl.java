@@ -2,6 +2,7 @@ package com.example.eCommerceDemo.mapper.order;
 
 import com.example.eCommerceDemo.dto.request.OrderRequestDTO;
 import com.example.eCommerceDemo.dto.response.OrderResponseDTO;
+import com.example.eCommerceDemo.dto.response.UserSummaryDTO;
 import com.example.eCommerceDemo.exceptions.NullObjectException;
 import com.example.eCommerceDemo.mapper.orderitem.OrderItemMapper;
 import com.example.eCommerceDemo.model.Order;
@@ -35,6 +36,15 @@ public class OrderMapperImpl implements OrderMapper{
         dto.setCountry(order.getCountry());
         dto.setPaymentMethod(order.getPaymentMethod());
         dto.setTotalPrice(order.getTotalPrice());
+
+        if (order.getUser() != null) {
+            UserSummaryDTO userSummaryDTO = new UserSummaryDTO();
+            userSummaryDTO.setId(order.getUser().getId());
+            userSummaryDTO.setEmail(order.getUser().getEmail());
+            userSummaryDTO.setName(order.getUser().getName());
+            dto.setUserSummaryDTO(userSummaryDTO);
+        }
+
         dto.setOrderItems(
                 order.getOrderItems().stream()
                         .map(orderItemMapper::toDTO)

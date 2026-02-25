@@ -28,8 +28,8 @@ public class ProductServiceImpl implements ProductService {
     @PreAuthorize("hasRole('ADMIN')")
     public ProductResponseDTO createProduct(ProductRequestDTO productRequestDTO)
     {
-        Product newProduct = productMapper.toEntity(new ProductRequestDTO());
-
+        Product newProduct = productMapper.toEntity(productRequestDTO);
+        newProduct.setSlug(productRequestDTO.getName().toLowerCase().replace(" ", "-"));
         productRepository.save(newProduct);
 
         return productMapper.toDTO(newProduct);

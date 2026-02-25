@@ -59,19 +59,19 @@ public class CartController {
             description = "Removes a specific item from the authenticated user's cart using the cart item ID."
     )
     @DeleteMapping("/items/{cartItemId}")
-    public ResponseEntity<Void> removeItem(@AuthenticationPrincipal User user,
-                                           @PathVariable Long cartItemId) {
-        cartService.removeItem(cartItemId, user.getId());
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<CartResponseDTO> removeItem(@AuthenticationPrincipal User user,
+                                                      @PathVariable Long cartItemId) {
+        return ResponseEntity.ok(cartService.removeItem(cartItemId, user.getId()));
     }
+
 
     @Operation(
             summary = "Clear cart",
             description = "Removes all items from the authenticated user's shopping cart."
     )
     @DeleteMapping
-    public ResponseEntity<Void> clearCart(@AuthenticationPrincipal User user) {
-        cartService.clearCart(user.getId());
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<CartResponseDTO> clearCart(@AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(cartService.clearCart(user.getId()));
     }
+
 }

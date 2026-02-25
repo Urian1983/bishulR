@@ -38,13 +38,13 @@ public class Order {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    @Column(name="address",nullable=false, unique = true,length = 500)
+    @Column(name="address",nullable=false,length = 500)
     private String address;
 
-    @Column(name="postal_code",nullable=false,unique = true)
+    @Column(name="postal_code",nullable=false)
     private String postalCode;
 
-    @Column(name="country",nullable=false, unique = true, length = 100)
+    @Column(name="country",nullable=false, length = 100)
     private String country;
 
     @Column(name="payment_method",nullable = false)

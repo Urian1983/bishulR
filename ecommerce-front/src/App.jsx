@@ -642,13 +642,23 @@ function CartPage({ setPage, onCartUpdate }) {
   }
   useEffect(() => { loadCart(); }, []);
 
-  async function removeItem(id) { await api.del(`/api/cart/items/${id}`); loadCart(); }
+  async function removeItem(id) {
+    const updatedCart = await api.del(`/api/cart/items/${id}`);
+    setCart(updatedCart);
+    if (onCartUpdate) onCartUpdate(updatedCart);
+  }
+
   async function updateItem(item, qty) {
     if (qty < 1) { await removeItem(item.id); return; }
     await api.put("/api/cart/items", { productId: item.productId, productName: item.productName, productPrice: item.productPrice, quantity: qty });
     loadCart();
   }
-  async function clearCart() { await api.del("/api/cart"); loadCart(); }
+
+  async function clearCart() {
+    const updatedCart = await api.del("/api/cart");
+    setCart(updatedCart);
+    if (onCartUpdate) onCartUpdate(updatedCart);
+  }
 
   if (loading) return <div className="page"><Spinner text="Cargando tu pedido…" /></div>;
   const items = cart?.cartItems ?? [];
@@ -726,15 +736,34 @@ function CartPage({ setPage, onCartUpdate }) {
 // ─── CHECKOUT MODAL ───────────────────────────────────────────────────────────
 function CheckoutModal({ total, onClose, onSuccess }) {
   const api = useApi();
-  const [form, setForm] = useState({ address: "", postalCode: "", country: "España" });
-  const [err, setErr] = useState(""); const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState({ 
+    address: "", 
+    postalCode: "", 
+    country: "España",
+    paymentMethod: "CREDIT_CARD"
+  });
+  const [err, setErr] = useState(""); 
+  const [loading, setLoading] = useState(false);
 
   async function submit(e) {
     e.preventDefault(); setErr(""); setLoading(true);
     try {
-      await api.post("/api/order", { orderNumber: `BISHUL-${Date.now()}`, address: form.address, postalCode: form.postalCode, country: form.country });
+      const order = await api.post("/api/order", {
+        orderNumber: `BISHUL-${Date.now()}`,
+        address: form.address,
+        postalCode: form.postalCode,
+        country: form.country
+      });
+      await api.post("/api/payments", {
+        orderId: order.id,
+        paymentMethod: form.paymentMethod
+      });
       onSuccess();
-    } catch (ex) { setErr(ex.message || "Error al confirmar el pedido"); } finally { setLoading(false); }
+    } catch (ex) { 
+      setErr(ex.message || "Error al confirmar el pedido"); 
+    } finally { 
+      setLoading(false); 
+    }
   }
 
   return (
@@ -749,6 +778,15 @@ function CheckoutModal({ total, onClose, onSuccess }) {
           <div className="field"><label>Dirección de entrega</label><input placeholder="Calle, número, piso…" value={form.address} onChange={e => setForm({ ...form, address: e.target.value })} required /></div>
           <div className="field"><label>Código postal</label><input placeholder="28001" value={form.postalCode} onChange={e => setForm({ ...form, postalCode: e.target.value })} required /></div>
           <div className="field"><label>País</label><input value={form.country} onChange={e => setForm({ ...form, country: e.target.value })} required /></div>
+          <div className="field">
+            <label>Método de pago</label>
+            <select value={form.paymentMethod} onChange={e => setForm({ ...form, paymentMethod: e.target.value })}>
+              <option value="CREDIT_CARD">💳 Tarjeta de crédito</option>
+              <option value="PAYPAL">🅿️ PayPal</option>
+              <option value="BANK_TRANSFER">🏦 Transferencia bancaria</option>
+              <option value="STRIPE">⚡ Stripe</option>
+            </select>
+          </div>
           <div className="modal-footer">
             <button type="button" className="btn btn-outline" onClick={onClose}>Cancelar</button>
             <button className="btn btn-primary" disabled={loading} style={{ borderRadius: 999 }}>
