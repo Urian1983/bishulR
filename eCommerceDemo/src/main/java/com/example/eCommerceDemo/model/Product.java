@@ -29,7 +29,7 @@ public class Product {
     private LocalDateTime updatedAt;
 
     @Column(name="image_product")
-    String imageURL;
+    String imageUrl;
 
     @Column(unique = true,nullable = false, name="SKU")
     private String sku;
