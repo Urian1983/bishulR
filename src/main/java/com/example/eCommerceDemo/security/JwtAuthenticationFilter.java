@@ -30,8 +30,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String authHeader = request.getHeader("Authorization");
         final String path = request.getServletPath();
 
-        // 1. LÍNEA A AÑADIR: Si es una ruta pública, ignoramos el filtro y seguimos
-        if (path.startsWith("/api/auth/") || path.startsWith("/swagger-ui") || path.startsWith("/v3/api-docs")) {
+        if (path.startsWith("/api/auth/") ||
+                path.startsWith("/swagger-ui") ||
+                path.startsWith("/v3/api-docs") ||
+                path.startsWith("/swagger-resources") ||
+                path.startsWith("/webjars/")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -60,9 +63,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
         } catch (Exception e) {
-            // 2. LÍNEA A AÑADIR: Si el token falla, no dejamos que la app explote,
-            // simplemente no autenticamos y Spring Security ya decidirá si la ruta pide login o no.
-            logger.error("Cannot set user authentication: {}", e);
+            logger.error("Cannot set user authentication: " + e.getMessage());
         }
 
         filterChain.doFilter(request, response);

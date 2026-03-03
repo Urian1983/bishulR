@@ -1,16 +1,23 @@
 package com.example.eCommerceDemo.config;
 
-import io.swagger.v3.oas.models.Components;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springdoc.core.customizers.OpenApiCustomizer;
+
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.tags.Tag;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
+import io.swagger.v3.oas.models.responses.ApiResponse;
+import io.swagger.v3.oas.models.responses.ApiResponses;
+import io.swagger.v3.oas.models.media.Content;
+import io.swagger.v3.oas.models.media.MediaType;
+import io.swagger.v3.oas.models.media.Schema;
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 public class OpenAPIConfig {
@@ -46,5 +53,23 @@ public class OpenAPIConfig {
                                         .bearerFormat("JWT")
                                         .description("Provide the JWT token. Example: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'")))
                 .addSecurityItem(new SecurityRequirement().addList(securitySchemeName));
+    }
+    @Bean
+    public OpenApiCustomizer globalErrorResponsesCustomizer() {
+        return openApi -> openApi.getPaths().values().forEach(pathItem ->
+                pathItem.readOperations().forEach(operation -> {
+
+                    ApiResponses responses = operation.getResponses();
+
+                    List.of("404", "409", "500").forEach(code -> {
+                        responses.addApiResponse(code, new ApiResponse()
+                                .description("Respuesta de error estandarizada")
+                                .content(new Content().addMediaType("application/json",
+                                        new MediaType().schema(
+                                                new Schema<>().$ref("#/components/schemas/ErrorResponseDTO")
+                                        ))));
+                    });
+                })
+        );
     }
 }
