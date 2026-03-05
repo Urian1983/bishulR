@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useCartContext } from '../../context/CartContext'
 import { useOrders } from '../../hooks/useOrders'
+import { useToast } from '../../atoms/Toast/ToastContainer'
 import Button from '../../atoms/Button'
 import Spinner from '../../atoms/Spinner'
 import styles from './CartPage.module.css'
@@ -16,6 +17,7 @@ const CartPage = () => {
   const { cart, loading, handleUpdateItem, handleRemoveItem, handleClearCart } = useCartContext()
   const { handleCreateOrder } = useOrders()
 
+  const { addToast } = useToast()
   const [checkoutOpen, setCheckoutOpen] = useState(false)
   const [checkoutLoading, setCheckoutLoading] = useState(false)
   const [checkoutError, setCheckoutError] = useState('')
@@ -78,6 +80,7 @@ const CartPage = () => {
         orderNumber: `ORD-${Date.now()}`,
         paymentMethod: form.paymentMethod,
       })
+      addToast('¡Comanda enviada a cocina! 🍽️', 'success', 3500)
       navigate('/orders')
     } catch (err) {
       setCheckoutError(err.response?.data?.message || 'Error al confirmar la comanda')

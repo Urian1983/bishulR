@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from './context/AuthContext'
+import { ToastProvider } from './atoms/Toast/ToastContainer'
 
 // Layout
 import MainLayout from './templates/MainLayout'
@@ -32,7 +33,8 @@ const AdminRoute = ({ children }) => {
 
 const App = () => {
   return (
-    <Routes>
+    <ToastProvider>
+      <Routes>
       <Route element={<MainLayout />}>
         <Route path="/"             element={<HomePage />} />
         <Route path="/products"     element={<ProductsPage />} />
@@ -48,7 +50,8 @@ const App = () => {
       <Route path="/register" element={<RegisterPage />} />
 
       <Route path="*" element={<NotFoundPage />} />
-    </Routes>
+      </Routes>
+    </ToastProvider>
   )
 }
 

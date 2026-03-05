@@ -1,5 +1,6 @@
 import Badge from '../../atoms/Badge'
 import Button from '../../atoms/Button'
+import { useToast } from '../../atoms/Toast/ToastContainer'
 import styles from './ProductCard.module.css'
 
 /**
@@ -12,12 +13,16 @@ import styles from './ProductCard.module.css'
  */
 const ProductCard = ({ product, onAddToCart, onClick }) => {
   const { name, imageUrl, category, price, stock, shortDescription } = product
+  const { addToast } = useToast()
 
   const outOfStock = stock === 0
 
   const handleAddToCart = (e) => {
     e.stopPropagation()
-    if (!outOfStock && onAddToCart) onAddToCart(product)
+    if (!outOfStock && onAddToCart) {
+      onAddToCart(product)
+      addToast(`${name} añadido a tu comanda`, 'success', 2500)
+    }
   }
 
   return (

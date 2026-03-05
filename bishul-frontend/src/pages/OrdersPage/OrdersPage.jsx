@@ -33,16 +33,16 @@ const OrdersPage = () => {
   return (
     <div className={styles.page}>
       <div className={styles.header}>
-        <h1 className={styles.title}>Mis pedidos</h1>
-        <p className={styles.subtitle}>{orders.length} {orders.length === 1 ? 'pedido' : 'pedidos'}</p>
+        <h1 className={styles.title}>Mis comandas</h1>
+        <p className={styles.subtitle}>{orders.length} {orders.length === 1 ? 'comanda' : 'comandas'}</p>
       </div>
 
       {orders.length === 0 ? (
         <div className={styles.empty}>
-          <span className={styles.emptyIcon}>📦</span>
-          <p className={styles.emptyText}>Aún no tienes pedidos</p>
+          <span className={styles.emptyIcon}>🍽️</span>
+          <p className={styles.emptyText}>Aún no tienes comandas</p>
           <Button variant="primary" onClick={() => navigate('/products')}>
-            Ver el menú
+            Ver la carta
           </Button>
         </div>
       ) : (
@@ -73,11 +73,7 @@ const OrdersPage = () => {
                 ))}
               </div>
 
-              <div className={styles.cardFooter}>
-                <div className={styles.shipping}>
-                  <span className={styles.shippingLabel}>Envío a</span>
-                  <span className={styles.shippingValue}>{order.address}, {order.postalCode} — {order.country}</span>
-                </div>
+                      <div className={styles.cardFooter}>
                 <div className={styles.total}>
                   <span className={styles.totalLabel}>Total</span>
                   <span className={styles.totalValue}>{Number(order.totalPrice).toFixed(2)} €</span>

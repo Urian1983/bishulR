@@ -32,7 +32,7 @@ const HomePage = () => {
       {/* Hero */}
       <section className={styles.hero} aria-label="Bienvenida">
         <div className={styles.heroContent}>
-          <p className={styles.heroEyebrow}>Restaurante mediterráneo · Valencia</p>
+          <p className={styles.heroEyebrow}>Restaurante mediterráneo · Barcelona</p>
           <h1 className={styles.heroTitle}>
             La carta de<br />
             <em>Bishul</em><br />
