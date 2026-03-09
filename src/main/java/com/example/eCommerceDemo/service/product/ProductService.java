@@ -12,4 +12,5 @@ public interface ProductService {
     void delete(Long id);
     ProductResponseDTO getById(Long id);
     List<ProductResponseDTO> getAllProducts();
+    void decrementStock(Long productId, int quantity);
 }

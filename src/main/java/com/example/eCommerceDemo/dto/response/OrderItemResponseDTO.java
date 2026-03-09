@@ -19,4 +19,7 @@ public class OrderItemResponseDTO {
 
     @Schema(description = "Price per unit at the time of purchase", example = "49.99")
     private BigDecimal price;
+
+    @Schema(description = "Name of the purchased product", example = "Paella valenciana")
+    private String productName;
 }

@@ -28,6 +28,7 @@ public class OrderMapperImpl implements OrderMapper{
 
         dto.setId(order.getId());
         dto.setOrderNumber(order.getOrderNumber());
+        dto.setTableNumber(order.getTableNumber());
         dto.setStatus(order.getStatus());
         dto.setCreatedAt(order.getCreatedAt());
         dto.setUpdatedAt(order.getUpdatedAt());
@@ -59,6 +60,7 @@ public class OrderMapperImpl implements OrderMapper{
         Order order = new Order();
 
         order.setOrderNumber(orderRequestDTO.getOrderNumber());
+        order.setTableNumber(orderRequestDTO.getTableNumber());
 
        return order;
     }

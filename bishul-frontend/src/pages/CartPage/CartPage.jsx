@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useCartContext } from '../../context/CartContext'
 import { useOrders } from '../../hooks/useOrders'
-import { useToast } from '../../atoms/Toast/ToastContainer'
 import Button from '../../atoms/Button'
 import Spinner from '../../atoms/Spinner'
 import styles from './CartPage.module.css'
@@ -17,11 +16,10 @@ const CartPage = () => {
   const { cart, loading, handleUpdateItem, handleRemoveItem, handleClearCart } = useCartContext()
   const { handleCreateOrder } = useOrders()
 
-  const { addToast } = useToast()
   const [checkoutOpen, setCheckoutOpen] = useState(false)
   const [checkoutLoading, setCheckoutLoading] = useState(false)
   const [checkoutError, setCheckoutError] = useState('')
-  const [form, setForm] = useState({ paymentMethod: '' })
+  const [form, setForm] = useState({ paymentMethod: '', tableNumber: '' })
   const [formErrors, setFormErrors] = useState({})
 
   const items = cart?.cartItems ?? []
@@ -63,6 +61,8 @@ const CartPage = () => {
   const validateForm = () => {
     const errors = {}
     if (!form.paymentMethod) errors.paymentMethod = 'Selecciona un método de pago'
+    if (!form.tableNumber || Number(form.tableNumber) < 1)
+      errors.tableNumber = 'Introduce un número de mesa válido'
     return errors
   }
 
@@ -79,8 +79,8 @@ const CartPage = () => {
       await handleCreateOrder({
         orderNumber: `ORD-${Date.now()}`,
         paymentMethod: form.paymentMethod,
+        tableNumber: Number(form.tableNumber),
       })
-      addToast('¡Comanda enviada a cocina! 🍽️', 'success', 3500)
       navigate('/orders')
     } catch (err) {
       setCheckoutError(err.response?.data?.message || 'Error al confirmar la comanda')
@@ -190,13 +190,36 @@ const CartPage = () => {
                 </Button>
               ) : (
                 <form className={styles.checkoutForm} onSubmit={handleCheckout} noValidate>
-                  <h3 className={styles.checkoutTitle}>Método de pago</h3>
+                  <h3 className={styles.checkoutTitle}>Datos de la comanda</h3>
 
                   {checkoutError && (
                     <p className={styles.checkoutError}>⚠️ {checkoutError}</p>
                   )}
 
+                  {/* Número de mesa */}
                   <div className={styles.field}>
+                    <label className={styles.fieldLabel} htmlFor="tableNumber">
+                      🪑 Número de mesa
+                    </label>
+                    <input
+                      id="tableNumber"
+                      type="number"
+                      min="1"
+                      className={styles.tableInput}
+                      placeholder="Ej: 5"
+                      value={form.tableNumber}
+                      onChange={(e) =>
+                        setForm((p) => ({ ...p, tableNumber: e.target.value }))
+                      }
+                    />
+                    {formErrors.tableNumber && (
+                      <span className={styles.fieldError}>{formErrors.tableNumber}</span>
+                    )}
+                  </div>
+
+                  {/* Método de pago */}
+                  <div className={styles.field}>
+                    <label className={styles.fieldLabel}>💳 Método de pago</label>
                     <div className={styles.paymentMethods}>
                       {PAYMENT_METHODS.map((method) => (
                         <button

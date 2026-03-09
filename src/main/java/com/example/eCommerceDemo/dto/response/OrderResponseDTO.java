@@ -20,6 +20,9 @@ public class OrderResponseDTO {
     @Schema(description = "Business order number", example = "ORD-12345")
     private String orderNumber;
 
+    @Schema(description = "Restaurant table number", example = "5")
+    private int tableNumber;
+
     @Schema(description = "Current status of the order")
     private Status status;
 

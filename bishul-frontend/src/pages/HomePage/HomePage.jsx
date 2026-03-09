@@ -7,7 +7,7 @@ import styles from './HomePage.module.css'
 
 /**
  * Page: HomePage
- * Hero + carta del restaurante Bishul.
+ * Versión simplificada: Hero enfocado + Catálogo de productos.
  */
 const HomePage = () => {
   const navigate = useNavigate()
@@ -29,7 +29,7 @@ const HomePage = () => {
   return (
     <div className={styles.page}>
 
-      {/* Hero */}
+      {/* Hero Simplificado */}
       <section className={styles.hero} aria-label="Bienvenida">
         <div className={styles.heroContent}>
           <p className={styles.heroEyebrow}>Restaurante mediterráneo · Barcelona</p>
@@ -40,41 +40,22 @@ const HomePage = () => {
           </h1>
           <p className={styles.heroSubtitle}>
             Cocina mediterránea de autor elaborada con producto fresco de temporada.
-            Del Levante español a los sabores de Oriente Medio, en cada plato una historia.
           </p>
           <div className={styles.heroActions}>
             <Button variant="primary" size="lg" onClick={() => navigate('/products')}>
               Ver la carta
             </Button>
-
           </div>
         </div>
-        <div className={styles.heroDecor} aria-hidden="true">
-          <span className={styles.heroEmoji}>🫕</span>
-          <span className={styles.heroEmojiSm1}>🥗</span>
-          <span className={styles.heroEmojiSm2}>🍋</span>
-          <span className={styles.heroEmojiSm3}>🫒</span>
-        </div>
+        {/* Se ha eliminado la decoración de emojis para una estética más limpia */}
       </section>
 
-      {/* Features */}
-      <section className={styles.features} aria-label="Nuestros valores">
-        {FEATURES.map(({ icon, title, text }) => (
-          <div key={title} className={styles.featureCard}>
-            <span className={styles.featureIcon}>{icon}</span>
-            <h3 className={styles.featureTitle}>{title}</h3>
-            <p className={styles.featureText}>{text}</p>
-          </div>
-        ))}
-      </section>
-
-      {/* Carta */}
+      {/* Carta (Sección Principal) */}
       <section className={styles.catalog}>
         <div className={styles.catalogHeader}>
           <h2 className={styles.catalogTitle}>Nuestra carta</h2>
           <p className={styles.catalogSubtitle}>
-            Platos elaborados cada día con ingredientes frescos, recetas de temporada
-            y técnicas que respetan la tradición mediterránea
+            Platos elaborados cada día con ingredientes frescos y técnicas tradicionales.
           </p>
         </div>
         <ProductGrid
@@ -88,23 +69,5 @@ const HomePage = () => {
     </div>
   )
 }
-
-const FEATURES = [
-  {
-    icon: '🌿',
-    title: 'Producto de temporada',
-    text: 'Trabajamos con productores locales y seleccionamos solo ingredientes frescos cada mañana.',
-  },
-  {
-    icon: '👨‍🍳',
-    title: 'Cocina de autor',
-    text: 'Recetas que fusionan la tradición culinaria mediterránea con técnicas de vanguardia.',
-  },
-  {
-    icon: '🍷',
-    title: 'Maridaje perfecto',
-    text: 'Nuestra selección de vinos y bebidas está pensada para realzar cada plato de la carta.',
-  },
-]
 
 export default HomePage

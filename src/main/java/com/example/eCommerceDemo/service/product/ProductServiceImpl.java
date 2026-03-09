@@ -109,4 +109,21 @@ public class ProductServiceImpl implements ProductService {
         log.debug("Found {} products in database", products.size());
         return products;
     }
+    @Override
+    public void decrementStock(Long productId, int quantity) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> {
+                    log.error("Stock update failed: Product ID {} not found", productId);
+                    return new NotFoundException();
+                });
+
+        if (product.getStock() < quantity) {
+            log.warn("Insufficient stock for product ID: {}", productId);
+            throw new IllegalStateException("Stock insuficiente para: " + product.getName());
+        }
+
+        product.setStock(product.getStock() - quantity);
+        productRepository.save(product);
+        log.info("Stock updated for product ID: {}. New stock: {}", productId, product.getStock());
+    }
 }

@@ -52,6 +52,9 @@ const OrdersPage = () => {
               <div className={styles.cardHeader}>
                 <div className={styles.cardMeta}>
                   <span className={styles.orderNumber}>#{order.orderNumber?.slice(-8).toUpperCase()}</span>
+                  {order.tableNumber > 0 && (
+                    <span className={styles.tableNumber}>🪑 Mesa {order.tableNumber}</span>
+                  )}
                   <span className={styles.orderDate}>
                     {new Date(order.createdAt).toLocaleDateString('es-ES', {
                       day: '2-digit', month: 'long', year: 'numeric'
@@ -73,7 +76,7 @@ const OrdersPage = () => {
                 ))}
               </div>
 
-                      <div className={styles.cardFooter}>
+              <div className={styles.cardFooter}>
                 <div className={styles.total}>
                   <span className={styles.totalLabel}>Total</span>
                   <span className={styles.totalValue}>{Number(order.totalPrice).toFixed(2)} €</span>
