@@ -60,13 +60,11 @@ Este proyecto es **personal** y sirve como **ejemplo para portafolio**, mostrand
 
 ### 1️⃣ Ejecutar localmente desde el código
 
-```bash
-git clone https://github.com/Urian1983/smallShopDemo.git
-cd smallShopDemo
-./mvnw clean install
-./mvnw spring-boot:run
+1. Tienes que tener Docker instalado o ejecutandose, ya sea la versión para terminal o Docker Desktop
+2. En una ventaja de la terminal escribe: docker compose up --build la primera vez que lo ejecutas.
+3. Abre otra terminal o una pestaña de la misma y haz el comando cd bishul-frontent, si no te sale al principio usa el tabulador
+4. En la segunda terminal ejecuta npm run dev.
 
-```
 La aplicación estará disponible en http://localhost:8080.
 
 Si quieres probar la app sin compilar nada:
